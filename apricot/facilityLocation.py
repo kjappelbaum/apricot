@@ -21,8 +21,8 @@ from numba import prange
 
 from scipy.sparse import csr_matrix
 
-dtypes = 'int64(float64[:,:], float64[:], float64[:], int8[:])'
-sdtypes = 'int64(float64[:], int32[:], int32[:], float64[:], float64[:], int8[:])'
+dtypes = 'int64(float64[:,:], float32[:], float32[:], int8[:])'
+sdtypes = 'int64(float64[:], int32[:], int32[:], float32[:], float32[:], int8[:])'
 
 @njit(dtypes, nogil=True, parallel=True)
 def select_next(X, gains, current_values, mask):
@@ -207,7 +207,7 @@ class FacilityLocationSelection(SubmodularSelection):
 			if not self.sparse:
 				for i in self.initial_subset:
 					self.current_values = numpy.maximum(X_pairwise[i],
-						self.current_values).astype('float64')
+						self.current_values).astype('float32')
 			else:
 				for i in self.initial_subset:
 					self.current_values = numpy.maximum(
@@ -230,9 +230,9 @@ class FacilityLocationSelection(SubmodularSelection):
 
 		else:
 			if self.cupy:
-				gains = cupy.zeros(X_pairwise.shape[0], dtype='float64')
+				gains = cupy.zeros(X_pairwise.shape[0], dtype='float32')
 			else:
-				gains = numpy.zeros(X_pairwise.shape[0], dtype='float64')
+				gains = numpy.zeros(X_pairwise.shape[0], dtype='float32')
 
 			if self.cupy:
 				select_next_cupy(X_pairwise, gains, self.current_values,

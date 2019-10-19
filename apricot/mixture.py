@@ -105,7 +105,7 @@ class SubmodularMixtureSelection(SubmodularSelection):
 		self.submodular_functions = submodular_functions
 
 		if weights is None:
-			self.weights = numpy.ones(self.m, dtype='float64')
+			self.weights = numpy.ones(self.m, dtype='float32')
 		else:
 			self.weights = weights
 
@@ -166,9 +166,9 @@ class SubmodularMixtureSelection(SubmodularSelection):
 
 		else:
 			if self.cupy:
-				gains = cupy.zeros(X.shape[0], dtype='float64')
+				gains = cupy.zeros(X.shape[0], dtype='float32')
 			else:
-				gains = numpy.zeros(X.shape[0], dtype='float64')
+				gains = numpy.zeros(X.shape[0], dtype='float32')
 
 			for i, function in enumerate(self.submodular_functions):
 				gains += function._calculate_gains(X) * self.weights[i]

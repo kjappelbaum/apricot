@@ -149,7 +149,7 @@ class SubmodularSelection(object):
 		self._initialize(X)
 
 		if not self.sparse and not self.cupy:
-			X = X.astype('float64')
+			X = X.astype('float32')
 
 		optimizers = {
 			'naive' : NaiveGreedy(self, self.verbose),
@@ -239,12 +239,12 @@ class SubmodularSelection(object):
 		self.gains = []
 
 		if self.cupy:
-			self.current_values = cupy.zeros(X.shape[1], dtype='float64')
-			self.current_concave_values = cupy.zeros(X.shape[1], dtype='float64')
+			self.current_values = cupy.zeros(X.shape[1], dtype='float32')
+			self.current_concave_values = cupy.zeros(X.shape[1], dtype='float32')
 			self.mask = cupy.zeros(X.shape[0], dtype='int8')
 		else:
-			self.current_values = numpy.zeros(X.shape[1], dtype='float64')
-			self.current_concave_values = numpy.zeros(X.shape[1], dtype='float64')
+			self.current_values = numpy.zeros(X.shape[1], dtype='float32')
+			self.current_concave_values = numpy.zeros(X.shape[1], dtype='float32')
 			self.mask = numpy.zeros(X.shape[0], dtype='int8')
 
 

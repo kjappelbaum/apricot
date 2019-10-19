@@ -21,8 +21,8 @@ from tqdm import tqdm
 from numba import njit, jit
 from numba import prange
 
-dtypes = 'int64(float64[:,:], float64[:], float64[:], int8[:])'
-sdtypes = 'int64(float64[:], int32[:], int32[:], float64[:], float64[:], float64[:], int8[:])'
+dtypes = 'int64(float32[:,:], float32[:], float32[:], int8[:])'
+sdtypes = 'int64(float32[:], int32[:], int32[:], float32[:], float32[:], float32[:], int8[:])'
 
 @njit(dtypes, nogil=True, parallel=True)
 def select_sqrt_next(X, gains, current_values, mask):
@@ -303,9 +303,9 @@ class FeatureBasedSelection(SubmodularSelection):
 		if self.initial_subset is None:
 			return
 		elif self.initial_subset.ndim == 2:
-			self.current_values = self.initial_subset.sum(axis=0).astype('float64')
+			self.current_values = self.initial_subset.sum(axis=0).astype('float32')
 		elif self.initial_subset.ndim == 1:
-			self.current_values = X[self.initial_subset].sum(axis=0).astype('float64')
+			self.current_values = X[self.initial_subset].sum(axis=0).astype('float32')
 		else:
 			raise ValueError("The initial subset must be either a two dimensional" \
 				" matrix of examples or a one dimensional mask.")
@@ -352,9 +352,9 @@ class FeatureBasedSelection(SubmodularSelection):
 
 		else:
 			if self.cupy:
-				gains = cupy.zeros(X.shape[0], dtype='float64')
+				gains = cupy.zeros(X.shape[0], dtype='float32')
 			else:
-				gains = numpy.zeros(X.shape[0], dtype='float64')
+				gains = numpy.zeros(X.shape[0], dtype='float32')
 
 			if concave_func is not None:
 				if self.sparse:
