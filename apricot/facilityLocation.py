@@ -21,8 +21,8 @@ from numba import prange
 
 from scipy.sparse import csr_matrix
 
-dtypes = 'int64(float64[:,:], float32[:], float32[:], int8[:])'
-sdtypes = 'int64(float64[:], int32[:], int32[:], float32[:], float32[:], int8[:])'
+dtypes = 'int64(float32[:,:], float32[:], float32[:], int8[:])'
+sdtypes = 'int64(float32[:], int32[:], int32[:], float32[:], float32[:], int8[:])'
 
 @njit(dtypes, nogil=True, parallel=True)
 def select_next(X, gains, current_values, mask):
@@ -187,7 +187,7 @@ class FacilityLocationSelection(SubmodularSelection):
 		if self.pairwise_func == 'precomputed':
 			X_pairwise = X
 		else:
-			X = numpy.array(X, dtype='float64')
+			X = numpy.array(X, dtype='float32')
 			X_pairwise = self.pairwise_func(X)
 
 			if self.pairwise_func_name == 'euclidean':
@@ -211,7 +211,7 @@ class FacilityLocationSelection(SubmodularSelection):
 			else:
 				for i in self.initial_subset:
 					self.current_values = numpy.maximum(
-						X_pairwise[i].toarray()[0], self.current_values).astype('float64')
+						X_pairwise[i].toarray()[0], self.current_values).astype('float32')
 		else:
 			raise ValueError("The initial subset must be either a two dimensional" \
 				" matrix of examples or a one dimensional mask.")
